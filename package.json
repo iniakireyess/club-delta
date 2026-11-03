@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl/mapbox": "^9.4.1",
     "@supabase/supabase-js": "^2.118.0",
     "deck.gl": "^9.4.1",
     "maplibre-gl": "^6.16.0",

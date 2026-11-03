@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react'
-import { DeckGL, ScatterplotLayer } from 'deck.gl'
-import { Map } from 'react-map-gl/maplibre'
+import { ScatterplotLayer } from 'deck.gl'
+import { MapboxOverlay } from '@deck.gl/mapbox'
+import { Map, useControl } from 'react-map-gl/maplibre'
+import { setWorkerUrl } from 'maplibre-gl'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { supabase } from './supabase'
 import './App.css'
 
+// Vite mueve los archivos al empaquetar: sin esto MapLibre no encuentra su worker y no dibuja las calles
+setWorkerUrl(maplibreWorkerUrl)
+
 const COLORES = { Desayuno: [232, 89, 12], Merienda: [194, 37, 92], Cena: [74, 47, 217] }
 const VISTA_INICIAL = { longitude: -58.62, latitude: -34.44, zoom: 11.3 }
 const MAPA = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+
+// Dibuja las capas de deck.gl encima del mapa de MapLibre
+function DeckGLOverlay(props) {
+  const overlay = useControl(() => new MapboxOverlay(props))
+  overlay.setProps(props)
+  return null
+}
 
 export default function App() {
   const [sedes, setSedes] = useState([])
@@ -82,17 +95,19 @@ export default function App() {
       </section>
 
       <section className="mapa">
-        <DeckGL
+        <Map
           initialViewState={VISTA_INICIAL}
-          controller={true}
-          layers={layers}
-          getTooltip={({ object }) => object && {
-            html: `<b>${object.nombre}</b><br/>Zona: ${object.zona}<br/>Franja más fuerte: ${object.categoria}<br/>Clientes: ${object.valor}<br/>Sellos del mes: ${object.sellos_mes}<br/>Avisos del mes: ${object.avisos_mes}`,
-            style: { background: '#16181D', color: '#fff', borderRadius: '10px', padding: '10px 12px', fontSize: '13px' }
-          }}
+          mapStyle={MAPA}
+          style={{ width: '100%', height: '100%' }}
         >
-          <Map mapStyle={MAPA} />
-        </DeckGL>
+          <DeckGLOverlay
+            layers={layers}
+            getTooltip={({ object }) => object && {
+              html: `<b>${object.nombre}</b><br/>Zona: ${object.zona}<br/>Franja más fuerte: ${object.categoria}<br/>Clientes: ${object.valor}<br/>Sellos del mes: ${object.sellos_mes}<br/>Avisos del mes: ${object.avisos_mes}`,
+              style: { background: '#16181D', color: '#fff', borderRadius: '10px', padding: '10px 12px', fontSize: '13px' }
+            }}
+          />
+        </Map>
         <div className="leyenda">
           {Object.entries(COLORES).map(([franja, c]) => (
             <span key={franja}>
