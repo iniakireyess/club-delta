@@ -1,3 +1,25 @@
+export const COLORES_FRANJA = { Desayuno: '#E8590C', Merienda: '#C2255C', Cena: '#4A2FD9' }
+
+// '#4A2FD9' -> [74, 47, 217], el formato de color de deck.gl
+export function hexARgb(hex) {
+  return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
+}
+
+// 'Restaurante Delta' -> 'RD'
+export function iniciales(nombre = '') {
+  return nombre.trim().split(/\s+/).slice(0, 2).map(p => p[0] || '').join('').toUpperCase()
+}
+
+export function tiempoRelativo(fecha) {
+  const min = Math.max(0, Math.round((Date.now() - new Date(fecha).getTime()) / 60000))
+  if (min < 1) return 'recién'
+  if (min < 60) return `hace ${min} min`
+  const horas = Math.round(min / 60)
+  if (horas < 24) return `hace ${horas} h`
+  const dias = Math.round(horas / 24)
+  return `hace ${dias} ${dias === 1 ? 'día' : 'días'}`
+}
+
 // Distancia en metros entre dos puntos (fórmula de Haversine)
 export function distanciaMetros(lat1, lng1, lat2, lng2) {
   const R = 6371000
