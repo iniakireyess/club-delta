@@ -1,0 +1,12 @@
+.app { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+.encabezado h1 { margin: 0; font-size: 28px; }
+.encabezado p { margin: 6px 0 20px; color: #555A66; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.kpi { background: #fff; border: 1px solid #E3E5EA; border-radius: 16px; padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; }
+.kpi span { font-size: 13px; color: #555A66; font-weight: 600; }
+.kpi strong { font-size: 32px; }
+.kpi small { color: #555A66; }
+.mapa { position: relative; height: 560px; border-radius: 16px; overflow: hidden; border: 1px solid #E3E5EA; }
+.leyenda { position: absolute; left: 12px; bottom: 12px; background: #fff; border-radius: 10px; padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; }
+.punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.error { color: #C2255C; font-weight: 600; }
